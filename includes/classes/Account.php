@@ -22,6 +22,13 @@
       }
     }
 
+    public function getError($error) {
+      if(!in_array($error, $this->errorArray)) {
+        $error = "";
+      }
+      return "<span class='errorMessage'>$error</span>";
+    }
+
     private function validateUsername($un) {
       if (strlen($un) > 25 || strlen($un) < 5) {
         array_push($this->errorArray, "Your username must be between 5 and 25 characters");
@@ -65,7 +72,7 @@
       }
 
       if (strlen($pw) > 30 || strlen($pw) < 5) {
-        array_push($this->errorArray, "Your psddeotf must be between 5 and 30 characters");
+        array_push($this->errorArray, "Your password must be between 5 and 30 characters");
         return;
       }
     }
