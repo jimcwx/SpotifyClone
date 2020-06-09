@@ -4,8 +4,20 @@
     private $errorArray;
 
     public function __construct($con) {
-      $this-con = $con;
+      $this->con = $con;
       $this->errorArray = array();
+    }
+
+    public function login($un, $pw) {
+      $pw = md5($pw);
+      $query = mysqli_query($this->con , "SELECT * FROM users WHERE username = '$un' AND password = '$pw'");
+
+      if (mysqli_num_rows($query) == 1) {
+        return true;
+      } else {
+        array_push($this->errorArray, Constants::$loginFailed);
+        return false;
+      }
     }
 
     public function register($un, $fn, $ln, $em, $em2, $pw, $pw2) {
@@ -17,7 +29,7 @@
 
       if (empty($this->errorArray)) {
         //Insert into db
-        return insertUserDetails($un, $fn, $ln, $em, $pw);
+        return $this->insertUserDetails($un, $fn, $ln, $em, $pw);
       }
       else {
         return false;
@@ -46,7 +58,12 @@
         return;
       }
 
-      //TODO: check if username exists
+      $checkUsernameQuery = mysqli_query($this->con, "SELECT username FROM users WHERE username='$un'");
+      if (mysqli_num_rows($checkUsernameQuery) != 0) {
+        array_push($this->errorArray, Constants::$usernameTaken);
+        return;
+      }
+
     }
     private function validateFirstName($fn) {
       if (strlen($fn) > 25 || strlen($fn) < 2) {
@@ -70,7 +87,11 @@
         return;
       }
 
-      //TODO: check if username or email hasn't already been used
+      $checkEmailQuery = mysqli_query($this->con, "SELECT email FROM users WHERE email='$em'");
+      if (mysqli_num_rows($checkEmailQuery) != 0) {
+        array_push($this->errorArray, Constants::$emailTaken);
+        return;
+      }
     }
     private function validatePasswords($pw,$pw2) {
       if ($pw != $pw2) {
