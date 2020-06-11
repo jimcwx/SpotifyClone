@@ -21,18 +21,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome to Spotify Clone!</title>
   <link rel="stylesheet" href="assets/css/register.css">
+  <script src='https://code.jquery.com/jquery-3.4.0.min.js' integrity='sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=' crossorigin='anonymous'></script>
+  <script src="assets/js/register.js"></script>
 </head>
 <body>
+  <?php
+    if(isset($_POST["registerButton"])) {
+      echo '
+        <script>
+          $(document).ready(function() {
+            $("#loginForm").hide();
+            $("#registerForm").show();
+          });
+        </script>';
+    } else {
+      echo '
+        <script>
+          $(document).ready(function() {
+            $("#loginForm").show();
+            $("#registerForm").hide();
+          });
+        </script>';
+    }
+  ?>
+  
+
   <div id="background">
     <div id="loginContainer">
-      
+
       <div id="inputContainer">
         <form action="register.php" id="loginForm" method="POST">
           <h2>Login to your account</h2>
           <p>
             <?php echo $account->getError(Constants::$loginFailed); ?>
             <label for="loginUsername">Username</label>
-            <input type="text" id="loginUsername" name="loginUsername" placeholder="e.g. bartSimpson" required>
+            <input type="text" id="loginUsername" name="loginUsername" placeholder="e.g. bartSimpson" value="<?php getInputValue("loginUsername") ?>" required>
           </p>
           <p>
             <label for="loginPassword">Password</label>
@@ -40,6 +63,10 @@
           </p>
           
           <button type="submit" name="loginButton">LOG IN</button>
+
+          <div class="hasAccountText">
+              <span id="hideLogin">Don't have an account yet? Sign up here!</span>
+          </div>
 
         </form>
 
@@ -87,8 +114,21 @@
           
           <button type="submit" name="registerButton">SIGN UP</button>
 
+          <div class="hasAccountText">
+              <span id="hideRegister">Already have an account? Log in here!</span>
+          </div>
         </form>
 
+      </div>
+
+      <div id="loginText">
+        <h1>Get great music, right now</h1>
+        <h2>Listen to loads of songs for free</h2>
+        <ul>
+          <li>Discover music you'll fall in love with</li>
+          <li>Create your own playlists</li>
+          <li>Follow artists to keep up to date</li>
+        </ul>
       </div>
     </div>
   </div>
