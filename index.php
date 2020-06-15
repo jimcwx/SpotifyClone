@@ -1,33 +1,27 @@
-<?php
-  include('includes/config.php');
+<?php include("includes/header.php"); ?>
 
-  //session_destroy();
-  if (isset($_SESSION['userLoggedIn'])) {
-    $userLoggedIn = $_SESSION['userLoggedIn'];
-  } else {
-    header('Location: register.php');
-  }
-?>
+<h1 class="pageHeadingBig">Something Else You Might Like</h1>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <title>Welcome to Spotify Clone</title>
-</head>
-<body>
-  <div id="mainContainer">
+<div class="gridViewContainer">
+  <?php
+    $albumQuery = mysqli_query($con, "SELECT * FROM albums ORDER BY RAND() LIMIT 10");
 
-    <div id="topContainer">
-      <?php include("includes/navBarContainer.php"); ?>
-    </div>
+    while($row = mysqli_fetch_array($albumQuery)) {
+      
 
-    <?php include("includes/nowPlayingBarContainer.php"); ?>
+      echo 
+        "<div class='gridViewItem'>
+          <a href='album.php?id=". $row['id'] ."'>
+            <img src='" . $row['artworkPath'] . "'>
 
-  </div>
+            <div class='gridViewInfo'>"
+              . $row['title'] .
+            "</div>
+          </a>
+        </div>";
 
+    }
+  ?>
+</div>
 
-</body>
-</html>
+<?php include("includes/footer.php"); ?>
