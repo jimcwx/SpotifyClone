@@ -7,8 +7,12 @@ var currentIndex = 0;
 var repeat= false;
 var shuffle = false;
 var userLoggedIn;
+var timer;
 
 function openPage(url) {
+  if(timer != null) {
+    clearTimeout(timer);
+  }
 
   if (url.indexOf('?') == -1) {
     url = url + "?";
@@ -29,6 +33,10 @@ function formatTime(seconds) {
 
 
   return `${minutes}:${extraZero}${second}`
+}
+
+function playFirstSong() {
+  setTrack(tempPlayList[0], tempPlayList, true);
 }
 
 function updateTimeProgressBar(audio) {
