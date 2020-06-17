@@ -12,9 +12,9 @@
 
 <script>
   $(document).ready(function() {
-    currentPlayList = <?php echo $jsonArray; ?>;
+    var newPlayList = <?php echo $jsonArray; ?>;
     audioElement = new Audio();
-    setTrack(currentPlayList[0], currentPlayList, false);
+    setTrack(newPlayList[0], newPlayList, false);
     updateVolumeProgressBar(audioElement.audio);
 
     $("#nowPlayingBarContainer").on("mousedown touchstart mousemove touchmove", function(e) {
@@ -99,7 +99,7 @@
       currentIndex++;
     }
 
-    var trackToPlay = currentPlayList[currentIndex];
+    var trackToPlay = shuffle ? shufflePlayList[currentIndex] : currentPlayList[currentIndex];
     setTrack(trackToPlay, currentPlayList, true);
   }
 
@@ -119,10 +119,42 @@
     shuffle = !shuffle;
     var imageName = shuffle ? "shuffle-active.png" : "shuffle.png";
     $(".controlButton.shuffle img").attr("src", `assets/images/icons/${imageName}`);
+
+    if(shuffle) {
+      //randomize playlist
+      shuffleArray(shufflePlayList);
+      currentIndex = shufflePlayList.indexOf(audioElement.currentlyPlaying.id);
+    } else {
+      //shuffle has activated
+      //go back to regular playlist
+      currentIndex = currentPlayList.indexOf(audioElement.currentlyPlaying.id);
+    }
   }
 
+  function shuffleArray(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
+}
+
   function setTrack(trackId, newPlayList, play) {
-    currentIndex = currentPlayList.indexOf(trackId);
+    if(newPlayList != currentPlayList) {
+      currentPlayList = newPlayList;
+      shufflePlayList = currentPlayList.slice();
+      shuffleArray(shufflePlayList);
+    }
+
+    if(shuffle) {
+      currentIndex = shufflePlayList.indexOf(trackId);
+    } else {
+      currentIndex = currentPlayList.indexOf(trackId);
+
+    }
     pauseSong();
 
     $.post("includes/handlers/ajax/getSongJson.php", { songId: trackId }, function(data) {
@@ -144,7 +176,7 @@
     });
 
     if(play) {
-      audioElement.play();
+      playSong();
     }
     
   }

@@ -1,6 +1,5 @@
 <?php 
   include("includes/includedFiles.php")
-
 ?>
 
 <h1 class="pageHeadingBig">Something Else You Might Like</h1>
@@ -26,4 +25,3 @@
     }
   ?>
 </div>
-
