@@ -381,6 +381,7 @@ body {
   border-radius: 500px;
   padding: 15px;
   min-width: 130px;
+  display: block;
 }
 
 .button.green {
@@ -486,4 +487,22 @@ input:focus {
 
 .optionsMenu select {
   border: none;
+}
+
+.userInfo h1 {
+  text-align: center;
+}
+
+.entityInfo.settings {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonItems {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

@@ -52,6 +52,12 @@ function openPage(url) {
   history.pushState(null, null, url);
 }
 
+function logout() {
+  $.post("includes/handlers/ajax/logout.php", function() {
+    location.reload();
+  })
+}
+
 function removeFromPlaylist(button, playlistId) {
   var songId = $(button).prevAll(".songId").val();
 
