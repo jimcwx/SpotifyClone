@@ -46,5 +46,22 @@
       return $array;
     }
 
+    public static function getPlaylistsDropdown($con, $username) {
+      $dropdown = '
+        <select name="" id="" class="item playlist">
+          <option value="">Add to playlist</option>';
+      
+      $query = mysqli_query($con, "SELECT id, name FROM playlists WHERE owner='$username'");
+
+      while($row=mysqli_fetch_array($query)) {
+        $id=$row['id'];
+        $name=$row['name'];
+
+        $dropdown = $dropdown . "<option value='$id'>$name</option>";
+      }
+      return $dropdown . "</select>";
+
+    }
+
   }
 ?>
